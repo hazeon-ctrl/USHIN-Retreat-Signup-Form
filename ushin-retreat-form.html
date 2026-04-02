@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USHIN — 6-Week Health Retreat</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --bg: #000000;
+    --fg: #ffffff;
+    --border: #ffffff;
+    --accent: #ffffff;
+    --dim: #888888;
+    --frame: 1px solid #ffffff;
+    --gap: 1.5rem;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    min-height: 100vh;
+    padding: 1.5rem 1rem 4rem;
+  }
+
+  /* HEADER */
+  header {
+    border: var(--frame);
+    padding: 2rem 1.5rem 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: var(--frame);
+    opacity: 0.3;
+    pointer-events: none;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 10vw, 5rem);
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .subtitle {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+
+  /* SECTIONS */
+  .section {
+    border: var(--frame);
+    margin-bottom: 1.5rem;
+  }
+  .section-header {
+    background: var(--fg);
+    color: var(--bg);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    padding: 0.5rem 1rem;
+    text-transform: uppercase;
+  }
+  .section-body {
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* FIELDS */
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  textarea,
+  select {
+    background: var(--bg);
+    border: var(--frame);
+    color: var(--fg);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    padding: 0.6rem 0.75rem;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--fg);
+    box-shadow: 0 0 0 1px var(--fg);
+  }
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='white'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2rem;
+    cursor: pointer;
+  }
+  select option {
+    background: #111;
+    color: #fff;
+  }
+
+  /* CATEGORY BLOCKS */
+  .category-block {
+    border: var(--frame);
+    margin-bottom: 1.25rem;
+  }
+  .category-block:last-child { margin-bottom: 0; }
+  .cat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0.85rem;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: var(--frame);
+    background: rgba(255,255,255,0.04);
+  }
+  .cat-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .cat-toggle {
+    font-size: 18px;
+    line-height: 1;
+    color: var(--dim);
+    transition: transform 0.2s;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .cat-toggle.open { transform: rotate(45deg); color: var(--fg); }
+  .cat-body {
+    display: none;
+    padding: 0.85rem;
+  }
+  .cat-body.open { display: block; }
+
+  /* SUBCATEGORY */
+  .subcat {
+    margin-bottom: 1rem;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 0.75rem;
+  }
+  .subcat:last-child { margin-bottom: 0; }
+  .subcat-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  /* CHECKBOX GRID */
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem 0.5rem;
+  }
+  @media (min-width: 480px) {
+    .checkbox-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  .cb-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    cursor: pointer;
+    line-height: 1.3;
+  }
+  .cb-item input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    min-width: 12px;
+    border: 1px solid var(--dim);
+    background: transparent;
+    cursor: pointer;
+    margin-top: 1px;
+    transition: background 0.1s, border-color 0.1s;
+    flex-shrink: 0;
+  }
+  .cb-item input[type="checkbox"]:checked {
+    background: var(--fg);
+    border-color: var(--fg);
+  }
+  .cb-item span {
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: #ccc;
+  }
+  .cb-item input:checked ~ span { color: var(--fg); }
+
+  /* NOTES FIELD */
+  .notes-field {
+    margin-top: 0.75rem;
+  }
+  .notes-field label {
+    font-size: 9px;
+  }
+  .notes-field textarea {
+    font-size: 12px;
+    min-height: 60px;
+  }
+
+  /* SUBMIT / DOWNLOAD */
+  .btn-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+  button {
+    background: transparent;
+    border: var(--frame);
+    color: var(--fg);
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    padding: 0.85rem 1.5rem;
+    text-transform: uppercase;
+    transition: background 0.15s, color 0.15s;
+    width: 100%;
+  }
+  button:hover { background: var(--fg); color: var(--bg); }
+  button.primary { background: var(--fg); color: var(--bg); }
+  button.primary:hover { background: transparent; color: var(--fg); }
+
+  .msg {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-align: center;
+    color: var(--dim);
+    margin-top: 0.5rem;
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: var(--frame);
+    margin: 0.75rem 0;
+    opacity: 0.2;
+  }
+
+  /* Radio for retreat dates */
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .radio-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+  .radio-item input[type="radio"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--dim);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.1s;
+  }
+  .radio-item input[type="radio"]:checked {
+    border-color: var(--fg);
+    background: radial-gradient(circle, var(--fg) 4px, transparent 4px);
+  }
+  .radio-item span { font-size: 12px; color: #ccc; }
+  .radio-item input:checked ~ span { color: var(--fg); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>USHIN</h1>
+  <div class="subtitle">Six-Week Health Retreat &nbsp;·&nbsp; Enrollment Form</div>
+</header>
+
+<form id="mainForm" novalidate>
+
+  <!-- USER INFO -->
+  <div class="section">
+    <div class="section-header">01 &nbsp;— User Information</div>
+    <div class="section-body">
+      <label>Full Name
+        <input type="text" id="userName" placeholder="First Last" required>
+      </label>
+      <label>Email Address
+        <input type="email" id="userEmail" placeholder="you@example.com">
+      </label>
+      <label>Phone Number
+        <input type="tel" id="userPhone" placeholder="+1 (000) 000-0000">
+      </label>
+      <label>Location / City
+        <input type="text" id="userCity" placeholder="City, State">
+      </label>
+      <label>Preferred Start
+        <div class="radio-group" style="margin-top:0.4rem">
+          <label class="radio-item"><input type="radio" name="startDate" value="Week A — Jan 6"> <span>Week A — Jan 6</span></label>
+          <label class="radio-item"><input type="radio" name="startDate" value="Week B — Feb 3"> <span>Week B — Feb 3</span></label>
+          <label class="radio-item"><input type="radio" name="startDate" value="Week C — Mar 3"> <span>Week C — Mar 3</span></label>
+          <label class="radio-item"><input type="radio" name="startDate" value="Flexible"> <span>Flexible</span></label>
+        </div>
+      </label>
+      <label>Additional Notes about yourself
+        <textarea id="userNotes" placeholder="Anything else you'd like us to know..."></textarea>
+      </label>
+    </div>
+  </div>
+
+  <!-- MAIN CATEGORIES -->
+  <div class="section">
+    <div class="section-header">02 &nbsp;— Health Categories</div>
+    <div class="section-body" style="padding:1rem 0.75rem">
+      <p style="font-size:11px;color:var(--dim);letter-spacing:0.1em;margin-bottom:0.75rem">Expand each category. Select all that apply. Add notes where relevant.</p>
+
+      <!-- SIGNS -->
+      <div class="category-block">
+        <div class="cat-header" onclick="toggleCat(this)">
+          <span class="cat-title">A &nbsp;— Signs</span>
+          <span class="cat-toggle">+</span>
+        </div>
+        <div class="cat-body">
+          <div class="subcat">
+            <span class="subcat-label">Vital Changes</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="signs" value="Elevated blood pressure"> <span>Elevated BP</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Low blood pressure"> <span>Low BP</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Irregular heart rate"> <span>Irregular pulse</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Elevated temperature"> <span>Elevated temp</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Low temperature"> <span>Low temp</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Abnormal respiration"> <span>Resp. changes</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Weight fluctuation"> <span>Weight changes</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="BMI concerns"> <span>BMI concerns</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Physical Appearance</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="signs" value="Skin changes"> <span>Skin changes</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Hair loss"> <span>Hair loss</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Nail changes"> <span>Nail changes</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Edema / swelling"> <span>Edema</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Pallor"> <span>Pallor</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Jaundice"> <span>Jaundice</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Cyanosis"> <span>Cyanosis</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Posture issues"> <span>Posture</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Neurological Signs</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="signs" value="Tremors"> <span>Tremors</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Balance issues"> <span>Balance</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Coordination issues"> <span>Coordination</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Speech changes"> <span>Speech</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Vision changes"> <span>Vision</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Hearing changes"> <span>Hearing</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Memory lapses"> <span>Memory</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Concentration gaps"> <span>Focus</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Digestive Signs</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="signs" value="Bloating"> <span>Bloating</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Irregular bowel"> <span>Bowel changes</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Appetite loss"> <span>Appetite loss</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Excessive appetite"> <span>Excess appetite</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Nausea"> <span>Nausea</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Acid reflux"> <span>Acid reflux</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Abdominal pain"> <span>Abdominal pain</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Food sensitivities"> <span>Food sensit.</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Respiratory Signs</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="signs" value="Shortness of breath"> <span>Breathlessness</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Chronic cough"> <span>Chronic cough</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Wheezing"> <span>Wheezing</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Congestion"> <span>Congestion</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Sleep apnea"> <span>Sleep apnea</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Low O2 sat"> <span>Low O2 sat</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Shallow breathing"> <span>Shallow breath</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Snoring"> <span>Snoring</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Musculoskeletal Signs</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="signs" value="Muscle weakness"> <span>Muscle weakness</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Joint stiffness"> <span>Joint stiffness</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Reduced flexibility"> <span>Flexibility</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Low bone density"> <span>Bone density</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Spinal curvature"> <span>Spinal curve</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Gait changes"> <span>Gait changes</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Muscle atrophy"> <span>Atrophy</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Chronic tension"> <span>Chronic tension</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Hormonal / Metabolic</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="signs" value="Blood sugar irregularity"> <span>Blood sugar</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Thyroid issues"> <span>Thyroid</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Adrenal fatigue signs"> <span>Adrenal</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Hormonal imbalance"> <span>Hormones</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Night sweats"> <span>Night sweats</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Hot flashes"> <span>Hot flashes</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Low libido"> <span>Low libido</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Metabolic slowdown"> <span>Slow metabolism</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Immune / Inflammatory</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="signs" value="Frequent illness"> <span>Freq. illness</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Slow healing"> <span>Slow healing</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Chronic inflammation"> <span>Inflammation</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Allergies worsening"> <span>Allergies</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Autoimmune flares"> <span>Autoimmune</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Swollen lymph nodes"> <span>Lymph nodes</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Rashes"> <span>Rashes</span></label>
+              <label class="cb-item"><input type="checkbox" name="signs" value="Fever patterns"> <span>Fever patterns</span></label>
+            </div>
+          </div>
+          <div class="notes-field">
+            <label>Notes on Signs
+              <textarea name="notes_signs" placeholder="Any additional observations about signs..."></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- SYMPTOMS -->
+      <div class="category-block">
+        <div class="cat-header" onclick="toggleCat(this)">
+          <span class="cat-title">B &nbsp;— Symptoms</span>
+          <span class="cat-toggle">+</span>
+        </div>
+        <div class="cat-body">
+          <div class="subcat">
+            <span class="subcat-label">Energy & Fatigue</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Chronic fatigue"> <span>Chronic fatigue</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Energy crashes"> <span>Energy crashes</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Morning exhaustion"> <span>Morning exhaustion</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Post-exertion fatigue"> <span>Post-exertion</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Afternoon slump"> <span>Afternoon slump</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Lethargy"> <span>Lethargy</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Low stamina"> <span>Low stamina</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Energy loss"> <span>General energy loss</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Motivation & Mood</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Motivation struggles"> <span>Motivation</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Persistent sadness"> <span>Sadness</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Anxiety"> <span>Anxiety</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Mood swings"> <span>Mood swings</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Irritability"> <span>Irritability</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Apathy"> <span>Apathy</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Emotional numbness"> <span>Numbness</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Social withdrawal"> <span>Withdrawal</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Mobility & Pain</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Mobility issues"> <span>Mobility issues</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Chronic pain"> <span>Chronic pain</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Back pain"> <span>Back pain</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Joint pain"> <span>Joint pain</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Headaches"> <span>Headaches</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Fibromyalgia symptoms"> <span>Fibromyalgia</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Neuropathy"> <span>Neuropathy</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Muscle cramps"> <span>Muscle cramps</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Sleep Disturbances</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Insomnia"> <span>Insomnia</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Hypersomnia"> <span>Hypersomnia</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Fragmented sleep"> <span>Fragmented sleep</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Vivid dreams"> <span>Vivid dreams</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Night anxiety"> <span>Night anxiety</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Restless legs"> <span>Restless legs</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Unrefreshing sleep"> <span>Unrefreshing</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Circadian disruption"> <span>Circadian</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Cognitive</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Brain fog"> <span>Brain fog</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Poor concentration"> <span>Concentration</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Memory issues"> <span>Memory</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Decision fatigue"> <span>Decision fatigue</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Word-finding trouble"> <span>Word-finding</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Disorganized thinking"> <span>Disorganized</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Overwhelm"> <span>Overwhelm</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Slow processing"> <span>Slow processing</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Digestive Symptoms</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="IBS symptoms"> <span>IBS</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Constipation"> <span>Constipation</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Diarrhea"> <span>Diarrhea</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Heartburn"> <span>Heartburn</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Abdominal cramps"> <span>Cramps</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Gas & bloating"> <span>Gas</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Nausea"> <span>Nausea</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Food intolerances"> <span>Intolerances</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Stress Response</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Burnout"> <span>Burnout</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Panic attacks"> <span>Panic attacks</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Chronic stress"> <span>Chronic stress</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Hypervigilance"> <span>Hypervigilance</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Emotional reactivity"> <span>Reactivity</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Freeze response"> <span>Freeze response</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Intrusive thoughts"> <span>Intrusive thoughts</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Rumination"> <span>Rumination</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Illness Patterns</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Recurring infections"> <span>Recurring infection</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Long COVID effects"> <span>Long COVID</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Chronic condition"> <span>Chronic condition</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Post-surgery recovery"> <span>Post-surgery</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Addiction recovery"> <span>Addiction recovery</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Illness"> <span>Active illness</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Medication side effects"> <span>Medication SE</span></label>
+              <label class="cb-item"><input type="checkbox" name="symptoms" value="Environmental sensitivity"> <span>Env. sensitivity</span></label>
+            </div>
+          </div>
+          <div class="notes-field">
+            <label>Notes on Symptoms
+              <textarea name="notes_symptoms" placeholder="Describe your symptoms in more detail..."></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- GOALS -->
+      <div class="category-block">
+        <div class="cat-header" onclick="toggleCat(this)">
+          <span class="cat-title">C &nbsp;— Goals</span>
+          <span class="cat-toggle">+</span>
+        </div>
+        <div class="cat-body">
+          <div class="subcat">
+            <span class="subcat-label">Weight & Body Composition</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="goals" value="Weight loss"> <span>Weight loss</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Weight gain"> <span>Weight gain</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Build muscle"> <span>Build muscle</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Reduce body fat"> <span>Reduce body fat</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Improve BMI"> <span>Improve BMI</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Body acceptance"> <span>Body acceptance</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Healthy maintenance"> <span>Maintenance</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Unspecified body goal"> <span>Unspecified</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Fitness & Movement</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="goals" value="Hiking fitness"> <span>Hiking</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Gym classes"> <span>Gym classes</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Cycling"> <span>Cycling</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Yoga practice"> <span>Yoga</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Tai Chi"> <span>Tai Chi</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Swimming"> <span>Swimming</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Running / jogging"> <span>Running</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Dance fitness"> <span>Dance</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Nutrition</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="goals" value="Diet planning"> <span>Diet planning</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Intermittent fasting"> <span>IF fasting</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Plant-based diet"> <span>Plant-based</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Anti-inflammatory diet"> <span>Anti-inflam.</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Gut health"> <span>Gut health</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Hydration habits"> <span>Hydration</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Reduce sugar"> <span>Reduce sugar</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Meal prep skills"> <span>Meal prep</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Mental Health</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="goals" value="Reduce anxiety"> <span>Reduce anxiety</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Manage depression"> <span>Depression mgmt</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Stress resilience"> <span>Stress resilience</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Emotional regulation"> <span>Emotional reg.</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Self-compassion"> <span>Self-compassion</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Build confidence"> <span>Confidence</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Grief processing"> <span>Grief</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Trauma healing"> <span>Trauma healing</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Sleep & Recovery</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="goals" value="Better sleep quality"> <span>Sleep quality</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Regular sleep schedule"> <span>Sleep schedule</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Faster recovery"> <span>Recovery</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Reduce screen time"> <span>Screen time</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Rest & stillness"> <span>Rest & stillness</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Nap strategies"> <span>Nap strategies</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Circadian reset"> <span>Circadian reset</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Breathwork for sleep"> <span>Breathwork</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Social & Relational</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="goals" value="Build community"> <span>Build community</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Improve relationships"> <span>Relationships</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Communication skills"> <span>Communication</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Set healthy boundaries"> <span>Boundaries</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Reconnect with family"> <span>Family</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Find support group"> <span>Support group</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Deepen friendships"> <span>Friendships</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Reduce isolation"> <span>Reduce isolation</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Spiritual & Purposeful</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="goals" value="Spiritual practice"> <span>Spiritual practice</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Find life purpose"> <span>Life purpose</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Values clarification"> <span>Values clarity</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Gratitude practice"> <span>Gratitude</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Forgiveness work"> <span>Forgiveness</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Connection to nature"> <span>Nature connection</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Creative expression"> <span>Creative expression</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Service to others"> <span>Service</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Lifestyle & Habit</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="goals" value="Quit smoking"> <span>Quit smoking</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Reduce alcohol"> <span>Reduce alcohol</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Better time mgmt"> <span>Time mgmt</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Work-life balance"> <span>Work-life balance</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Morning routine"> <span>Morning routine</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Digital detox"> <span>Digital detox</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Spend time outdoors"> <span>Outdoors</span></label>
+              <label class="cb-item"><input type="checkbox" name="goals" value="Unspecified lifestyle"> <span>Unspecified</span></label>
+            </div>
+          </div>
+          <div class="notes-field">
+            <label>Notes on Goals
+              <textarea name="notes_goals" placeholder="What does success look like for you after 6 weeks?"></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- MILEPOSTS -->
+      <div class="category-block">
+        <div class="cat-header" onclick="toggleCat(this)">
+          <span class="cat-title">D &nbsp;— Mileposts</span>
+          <span class="cat-toggle">+</span>
+        </div>
+        <div class="cat-body">
+          <div class="subcat">
+            <span class="subcat-label">Week 1 Targets</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Baseline assessment"> <span>Baseline assess.</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Establish routine"> <span>Establish routine</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="First movement session"> <span>First movement</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Sleep log started"> <span>Sleep log</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Food diary begun"> <span>Food diary</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Meet practitioner"> <span>Meet practitioner</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Goal setting session"> <span>Goal setting</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Community orientation"> <span>Orientation</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Week 2–3 Targets</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="First measurable change"> <span>First change</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Habit consistency"> <span>Habit consistency</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Energy improvement"> <span>Energy improve.</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Sleep quality up"> <span>Sleep up</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Pain reduction noted"> <span>Pain reduction</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Mood stabilization"> <span>Mood stable</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="First challenge overcome"> <span>First challenge</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="New connection made"> <span>New connection</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Week 4 Midpoint</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Mid-retreat review"> <span>Mid-review</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Goal recalibration"> <span>Recalibrate goals</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Body measurement check"> <span>Body check</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Mindfulness milestone"> <span>Mindfulness</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Social milestone"> <span>Social milestone</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Nutrition audit"> <span>Nutrition audit</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Fitness test"> <span>Fitness test</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Journaling review"> <span>Journal review</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Week 5–6 Targets</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Sustained habit"> <span>Sustained habit</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Key goal achieved"> <span>Key goal met</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Confidence boost"> <span>Confidence</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Symptom resolution"> <span>Symptom resolve</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Social integration"> <span>Social integration</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Exit plan drafted"> <span>Exit plan</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Long-term plan set"> <span>Long-term plan</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Celebrate progress"> <span>Celebrate</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Physical Benchmarks</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Walk 30 min daily"> <span>Walk 30 min/day</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Target weight hit"> <span>Target weight</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Run 5K"> <span>Run 5K</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Complete yoga module"> <span>Yoga module</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Pain below 3/10"> <span>Pain &lt;3/10</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Sleep 7+ hrs nightly"> <span>7+ hrs sleep</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="BP normalized"> <span>BP normalized</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Blood glucose stable"> <span>Glucose stable</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Mental Benchmarks</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Meditation streak 14d"> <span>14-day med. streak</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Journaling streak"> <span>Journal streak</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Anxiety score down"> <span>Anxiety score ↓</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Mood score up"> <span>Mood score ↑</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Anger management"> <span>Anger mgmt</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Creative breakthrough"> <span>Creative breakthru</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Insight journaled"> <span>Key insight</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Feel ready for life"> <span>Ready for life</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Learning & Skill</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="New recipe mastered"> <span>New recipe</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Self-care skill"> <span>Self-care skill</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Body literacy"> <span>Body literacy</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Breathwork certified"> <span>Breathwork</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Teach another"> <span>Teach another</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Read health book"> <span>Health book</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Workshop completed"> <span>Workshop</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Unspecified skill"> <span>Unspecified</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Community</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Accountability partner"> <span>Acct. partner</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Group share moment"> <span>Group share</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Mentor relationship"> <span>Mentor</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Facilitate discussion"> <span>Facilitate</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Support a peer"> <span>Support peer</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Shared meal event"> <span>Shared meal</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Group activity led"> <span>Lead activity</span></label>
+              <label class="cb-item"><input type="checkbox" name="mileposts" value="Post-retreat connection"> <span>Post-retreat</span></label>
+            </div>
+          </div>
+          <div class="notes-field">
+            <label>Notes on Mileposts
+              <textarea name="notes_mileposts" placeholder="Any specific benchmarks or checkpoints that matter to you..."></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVITIES -->
+      <div class="category-block">
+        <div class="cat-header" onclick="toggleCat(this)">
+          <span class="cat-title">E &nbsp;— Activities</span>
+          <span class="cat-toggle">+</span>
+        </div>
+        <div class="cat-body">
+          <div class="subcat">
+            <span class="subcat-label">Outdoor Movement</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="activities" value="Hiking"> <span>Hiking</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Trail running"> <span>Trail running</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Cycling"> <span>Cycling</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Swimming outdoors"> <span>Outdoor swimming</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Kayaking / paddling"> <span>Kayaking</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Forest bathing"> <span>Forest bathing</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Beach walks"> <span>Beach walks</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Gardening"> <span>Gardening</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Mind-Body Practice</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="activities" value="Yoga"> <span>Yoga</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Tai Chi"> <span>Tai Chi</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Qigong"> <span>Qigong</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Pilates"> <span>Pilates</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Breathwork"> <span>Breathwork</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Stretching / flexibility"> <span>Stretching</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Body scan"> <span>Body scan</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Somatic movement"> <span>Somatic</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Gym & Structured Fitness</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="activities" value="Gym classes"> <span>Gym classes</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Weight training"> <span>Weight training</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="HIIT"> <span>HIIT</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Spin class"> <span>Spin class</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Aqua fitness"> <span>Aqua fitness</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="CrossFit"> <span>CrossFit</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Circuit training"> <span>Circuit training</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Personal training"> <span>Personal training</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Creative & Expressive</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="activities" value="Dance"> <span>Dance</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Art & drawing"> <span>Art & drawing</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Music & singing"> <span>Music / singing</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Writing workshops"> <span>Writing</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Drama / theatre"> <span>Theatre</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Photography"> <span>Photography</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Craft making"> <span>Craft making</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Cooking classes"> <span>Cooking</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Community Activities</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="activities" value="Group discussions"> <span>Group discussion</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Peer support circles"> <span>Peer circles</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Volunteering"> <span>Volunteering</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Shared meals"> <span>Shared meals</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Group outings"> <span>Group outings</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Storytelling circles"> <span>Storytelling</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Book club"> <span>Book club</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Lectures & talks"> <span>Lectures</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Water & Thermal</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="activities" value="Sauna"> <span>Sauna</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Cold plunge"> <span>Cold plunge</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Hot springs"> <span>Hot springs</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Steam room"> <span>Steam room</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Hydrotherapy"> <span>Hydrotherapy</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Contrast bathing"> <span>Contrast bathing</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Flotation therapy"> <span>Float therapy</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Mineral baths"> <span>Mineral baths</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Learning & Reflection</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="activities" value="Health education"> <span>Health education</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Nutrition workshops"> <span>Nutrition</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Herbalism"> <span>Herbalism</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Sleep hygiene class"> <span>Sleep hygiene</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Stress management"> <span>Stress mgmt</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Mindset coaching"> <span>Mindset coaching</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Journaling guided"> <span>Guided journal</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Vision boarding"> <span>Vision boarding</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Rest & Restorative</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="activities" value="Restorative yoga"> <span>Restorative yoga</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Nap sessions"> <span>Naps</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Silent retreats"> <span>Silent time</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Nature sitting"> <span>Nature sitting</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Sound healing"> <span>Sound healing</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Guided imagery"> <span>Guided imagery</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="NSDR / Yoga Nidra"> <span>Yoga Nidra</span></label>
+              <label class="cb-item"><input type="checkbox" name="activities" value="Unplugged leisure"> <span>Unplugged time</span></label>
+            </div>
+          </div>
+          <div class="notes-field">
+            <label>Notes on Activities
+              <textarea name="notes_activities" placeholder="Any activities you'd like to prioritize or avoid..."></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- THERAPIES -->
+      <div class="category-block">
+        <div class="cat-header" onclick="toggleCat(this)">
+          <span class="cat-title">F &nbsp;— Therapies</span>
+          <span class="cat-toggle">+</span>
+        </div>
+        <div class="cat-body">
+          <div class="subcat">
+            <span class="subcat-label">Body-Based Therapies</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Massage therapy"> <span>Massage</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Acupuncture"> <span>Acupuncture</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Chiropractic"> <span>Chiropractic</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Osteopathy"> <span>Osteopathy</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Craniosacral"> <span>Craniosacral</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Reflexology"> <span>Reflexology</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Rolfing"> <span>Rolfing</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Physical therapy"> <span>Physical therapy</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Movement Therapies</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Dancing"> <span>Dancing</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Dance movement therapy"> <span>Dance therapy</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Sufi whirling"> <span>Sufi</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Authentic movement"> <span>Authentic mvt</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="5Rhythms"> <span>5Rhythms</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Biodanza"> <span>Biodanza</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Ecstatic dance"> <span>Ecstatic dance</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Somatic experiencing"> <span>Somatic exp.</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Contemplative Traditions</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Thich Nhat Hanh practice"> <span>Thich Nhat Hanh</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Zen practice"> <span>Zen</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Vipassana"> <span>Vipassana</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Sufi zikr"> <span>Sufi zikr</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Christian contemplation"> <span>Contemplation</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Indigenous ceremony"> <span>Ceremony</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Sweat lodge"> <span>Sweat lodge</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Vision quest"> <span>Vision quest</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Expressive Therapies</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Creative writing therapy"> <span>Creative writing</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Journaling therapy"> <span>Journaling</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Art therapy"> <span>Art therapy</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Music therapy"> <span>Music therapy</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Drama therapy"> <span>Drama therapy</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Poetry therapy"> <span>Poetry</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Sand play"> <span>Sand play</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Collage therapy"> <span>Collage</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Talk & Relational</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Productive conversation"> <span>Productive conv.</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Counseling / therapy"> <span>Counseling</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="CBT"> <span>CBT</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Narrative therapy"> <span>Narrative</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Motivational interview"> <span>MI</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="NVC / compassionate comm"> <span>NVC</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Group therapy"> <span>Group therapy</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Life coaching"> <span>Life coaching</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Sensory Therapies</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Aromatherapy"> <span>Aromatherapy</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Sound healing"> <span>Sound healing</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Colour therapy"> <span>Colour therapy</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Light therapy"> <span>Light therapy</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Touch therapy"> <span>Touch therapy</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Flotation / sensory dep"> <span>Sensory dep.</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Crystal healing"> <span>Crystal healing</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Earthing / grounding"> <span>Earthing</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Energy & Integrative</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Reiki"> <span>Reiki</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="EFT / tapping"> <span>EFT / tapping</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Homeopathy"> <span>Homeopathy</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Ayurveda"> <span>Ayurveda</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Traditional Chinese Med"> <span>TCM</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Naturopathy"> <span>Naturopathy</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Herbal medicine"> <span>Herbal medicine</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Functional medicine"> <span>Functional med.</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Trauma-Informed</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="therapies" value="EMDR"> <span>EMDR</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Somatic experiencing"> <span>Somatic exp.</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="IFS (parts work)"> <span>IFS</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Polyvagal-based therapy"> <span>Polyvagal</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Trauma-informed yoga"> <span>Trauma yoga</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Sensorimotor therapy"> <span>Sensorimotor</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Attachment-based"> <span>Attachment</span></label>
+              <label class="cb-item"><input type="checkbox" name="therapies" value="Hakomi"> <span>Hakomi</span></label>
+            </div>
+          </div>
+          <div class="notes-field">
+            <label>Notes on Therapies
+              <textarea name="notes_therapies" placeholder="Prior experience with therapies, preferences or contraindications..."></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEDITATION -->
+      <div class="category-block">
+        <div class="cat-header" onclick="toggleCat(this)">
+          <span class="cat-title">G &nbsp;— Meditation</span>
+          <span class="cat-toggle">+</span>
+        </div>
+        <div class="cat-body">
+          <div class="subcat">
+            <span class="subcat-label">Focused Attention</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Breath focus"> <span>Breath focus</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Candle / trataka"> <span>Trataka</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Mantra repetition"> <span>Mantra</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Counting meditation"> <span>Counting</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Body part focus"> <span>Body focus</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Sound focus"> <span>Sound focus</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Prayer beads / mala"> <span>Mala beads</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Koan practice"> <span>Koan</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Open Awareness</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Mindfulness (MBSR)"> <span>MBSR</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Open monitoring"> <span>Open monitoring</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Choiceless awareness"> <span>Choiceless aware.</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Vipassana insight"> <span>Vipassana</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Zen zazen"> <span>Zazen</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Non-dual awareness"> <span>Non-dual</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Presence practice"> <span>Presence</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Witnessing"> <span>Witnessing</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Heart-Centred</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Loving-kindness (Metta)"> <span>Metta</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Compassion (Karuna)"> <span>Karuna</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Gratitude meditation"> <span>Gratitude</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Forgiveness meditation"> <span>Forgiveness</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Heart coherence"> <span>Heart coherence</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Tonglen"> <span>Tonglen</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Self-compassion"> <span>Self-compassion</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Devotional prayer"> <span>Devotional prayer</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Visualization</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Guided visualization"> <span>Guided visual.</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Healing light meditation"> <span>Healing light</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Inner child work"> <span>Inner child</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Future self meeting"> <span>Future self</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Safe place meditation"> <span>Safe place</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Nature visualization"> <span>Nature visual.</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Chakra visualization"> <span>Chakra</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Archetypal journey"> <span>Archetypal</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Movement Meditation</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Walking meditation"> <span>Walking</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Kinhin (Zen walking)"> <span>Kinhin</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Labyrinth walking"> <span>Labyrinth</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Mindful yoga nidra"> <span>Yoga nidra</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Tai Chi meditation"> <span>Tai Chi med.</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Mindful eating"> <span>Mindful eating</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Sufi whirling med"> <span>Sufi whirling</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Conscious movement"> <span>Conscious mvt</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Breathwork Styles</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Box breathing"> <span>Box breathing</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Pranayama"> <span>Pranayama</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Holotropic breathing"> <span>Holotropic</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Wim Hof method"> <span>Wim Hof</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="4-7-8 breathing"> <span>4-7-8</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Alternate nostril"> <span>Nadi Shodhana</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Coherent breathing"> <span>Coherent breath</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Breath of fire"> <span>Breath of fire</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Sleep & Deep Rest</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Body scan sleep"> <span>Body scan</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="NSDR protocol"> <span>NSDR</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Sleep hypnosis"> <span>Sleep hypnosis</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Delta wave audio"> <span>Delta wave</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Progressive relaxation"> <span>Prog. relaxation</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Autogenic training"> <span>Autogenic</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Yin yoga into sleep"> <span>Yin yoga</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Sensory withdrawal"> <span>Sensory withdrawal</span></label>
+            </div>
+          </div>
+          <div class="subcat">
+            <span class="subcat-label">Tradition & Teacher-Based</span>
+            <div class="checkbox-grid">
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Thich Nhat Hanh"> <span>Thich Nhat Hanh</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="TM (Transcendental)"> <span>TM</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Tibetan Buddhist"> <span>Tibetan</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Krishnamurti"> <span>Krishnamurti</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Headspace / app-based"> <span>App-based</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Jon Kabat-Zinn MBSR"> <span>Kabat-Zinn</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Eckhart Tolle presence"> <span>Eckhart Tolle</span></label>
+              <label class="cb-item"><input type="checkbox" name="meditation" value="Unspecified tradition"> <span>Unspecified</span></label>
+            </div>
+          </div>
+          <div class="notes-field">
+            <label>Notes on Meditation
+              <textarea name="notes_meditation" placeholder="Prior meditation experience, preferred styles, challenges..."></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="btn-row">
+    <button type="button" class="primary" onclick="downloadTxt()">⬇ Download as Text File</button>
+    <button type="button" onclick="previewData()">Preview Selections</button>
+  </div>
+  <p class="msg" id="statusMsg"></p>
+
+  <!-- PREVIEW PANEL -->
+  <div class="section" id="previewSection" style="display:none;margin-top:1.5rem">
+    <div class="section-header">Preview — Enrollment Summary</div>
+    <div class="section-body">
+      <pre id="previewText" style="white-space:pre-wrap;font-size:11px;line-height:1.7;color:#ccc;word-break:break-word;font-family:'Space Mono',monospace"></pre>
+    </div>
+  </div>
+
+</form>
+
+<script>
+function toggleCat(header) {
+  const toggle = header.querySelector('.cat-toggle');
+  const body = header.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  toggle.classList.toggle('open', !isOpen);
+}
+
+function collectData() {
+  const get = id => document.getElementById(id)?.value?.trim() || '';
+  const checked = name => [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(i => i.value);
+  const note = name => document.querySelector(`textarea[name="${name}"]`)?.value?.trim() || '';
+  const radio = name => document.querySelector(`input[name="${name}"]:checked`)?.value || 'Not selected';
+
+  return {
+    name: get('userName'),
+    email: get('userEmail'),
+    phone: get('userPhone'),
+    city: get('userCity'),
+    startDate: radio('startDate'),
+    userNotes: get('userNotes'),
+    categories: {
+      Signs:      { selected: checked('signs'),      notes: note('notes_signs') },
+      Symptoms:   { selected: checked('symptoms'),   notes: note('notes_symptoms') },
+      Goals:      { selected: checked('goals'),      notes: note('notes_goals') },
+      Mileposts:  { selected: checked('mileposts'),  notes: note('notes_mileposts') },
+      Activities: { selected: checked('activities'), notes: note('notes_activities') },
+      Therapies:  { selected: checked('therapies'),  notes: note('notes_therapies') },
+      Meditation: { selected: checked('meditation'), notes: note('notes_meditation') },
+    }
+  };
+}
+
+function formatTxt(d) {
+  const line = (len=60, ch='─') => ch.repeat(len);
+  const wrap = (text, width=58) => {
+    if (!text) return '  (none)';
+    const words = text.split(/\s+/);
+    let lines = [], cur = '';
+    for (const w of words) {
+      if ((cur + ' ' + w).length > width) { lines.push('  ' + cur.trim()); cur = w; }
+      else cur += (cur ? ' ' : '') + w;
+    }
+    if (cur) lines.push('  ' + cur.trim());
+    return lines.join('\n');
+  };
+
+  let out = '';
+  out += `USHIN — 6-WEEK HEALTH RETREAT\n`;
+  out += `ENROLLMENT FORM\n`;
+  out += line() + '\n\n';
+
+  out += `GENERATED  : ${new Date().toLocaleString()}\n\n`;
+
+  out += `USER INFORMATION\n`;
+  out += line(40,'-') + '\n';
+  out += `Name       : ${d.name || '—'}\n`;
+  out += `Email      : ${d.email || '—'}\n`;
+  out += `Phone      : ${d.phone || '—'}\n`;
+  out += `Location   : ${d.city || '—'}\n`;
+  out += `Start Pref : ${d.startDate}\n`;
+  if (d.userNotes) { out += `\nNotes:\n${wrap(d.userNotes)}\n`; }
+  out += '\n';
+
+  const catLetters = 'ABCDEFG';
+  Object.entries(d.categories).forEach(([cat, val], i) => {
+    out += `${catLetters[i]}. ${cat.toUpperCase()}\n`;
+    out += line(40,'-') + '\n';
+    if (val.selected.length === 0) {
+      out += '  No selections made.\n';
+    } else {
+      val.selected.forEach(s => out += `  ✓ ${s}\n`);
+    }
+    if (val.notes) {
+      out += `\n  Notes:\n${wrap(val.notes)}\n`;
+    }
+    out += '\n';
+  });
+
+  out += line() + '\n';
+  out += 'END OF ENROLLMENT FORM — USHIN\n';
+  return out;
+}
+
+function previewData() {
+  const d = collectData();
+  const txt = formatTxt(d);
+  document.getElementById('previewText').textContent = txt;
+  const sec = document.getElementById('previewSection');
+  sec.style.display = 'block';
+  sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('statusMsg').textContent = '';
+}
+
+function downloadTxt() {
+  const d = collectData();
+  if (!d.name) {
+    document.getElementById('statusMsg').textContent = '⚠ Please enter your name before downloading.';
+    document.getElementById('userName').focus();
+    return;
+  }
+  const txt = formatTxt(d);
+  const blob = new Blob([txt], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const slug = (d.name || 'participant').toLowerCase().replace(/\s+/g,'-');
+  a.href = url;
+  a.download = `ushin-enrollment-${slug}-${Date.now()}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+  document.getElementById('statusMsg').textContent = '✓ File downloaded successfully.';
+}
+</script>
+</body>
+</html>
