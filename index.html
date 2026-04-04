@@ -1188,7 +1188,7 @@
 
   <!-- SUBMIT -->
   <div class="btn-row">
-    <button type="button" class="primary" onclick="downloadTxt()">⬇ Download as Text File</button>
+    <button type="button" class="primary" onclick="downloadTxt()">Download as Text File</button>
     <button type="button" onclick="previewData()">Preview Selections</button>
   </div>
   <p class="msg" id="statusMsg"></p>
@@ -1275,7 +1275,7 @@ function formatTxt(d) {
     if (val.selected.length === 0) {
       out += '  No selections made.\n';
     } else {
-      val.selected.forEach(s => out += `  ✓ ${s}\n`);
+      val.selected.forEach(s => out += `  [x] ${s}\n`);
     }
     if (val.notes) {
       out += `\n  Notes:\n${wrap(val.notes)}\n`;
@@ -1301,12 +1301,14 @@ function previewData() {
 function downloadTxt() {
   const d = collectData();
   if (!d.name) {
-    document.getElementById('statusMsg').textContent = '⚠ Please enter your name before downloading.';
+    document.getElementById('statusMsg').textContent = 'Please enter your name before downloading.';
     document.getElementById('userName').focus();
     return;
   }
   const txt = formatTxt(d);
-  const blob = new Blob([txt], { type: 'text/plain' });
+  // Prepend UTF-8 BOM so mobile browsers interpret encoding correctly
+  const bom = '\uFEFF';
+  const blob = new Blob([bom + txt], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   const slug = (d.name || 'participant').toLowerCase().replace(/\s+/g,'-');
@@ -1314,7 +1316,7 @@ function downloadTxt() {
   a.download = `ushin-enrollment-${slug}-${Date.now()}.txt`;
   a.click();
   URL.revokeObjectURL(url);
-  document.getElementById('statusMsg').textContent = '✓ File downloaded successfully.';
+  document.getElementById('statusMsg').textContent = 'File downloaded successfully.';
 }
 </script>
 </body>
