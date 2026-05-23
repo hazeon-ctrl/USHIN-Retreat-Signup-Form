@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>USHIN — 6-Week Health Retreat</title>
+<title>MEND — 6-Week Custom Retreat</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap');
 
@@ -308,45 +308,33 @@
 <body>
 
 <header>
-  <h1>USHIN</h1>
-  <div class="subtitle">Six-Week Health Retreat &nbsp;·&nbsp; Enrollment Form</div>
+  <h1>MEND</h1>
+  <div class="subtitle">6-Week &nbsp;<em style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;letter-spacing:0.15em">Custom</em>&nbsp; Retreat &nbsp;·&nbsp; Enrollment Form</div>
 </header>
 
 <form id="mainForm" novalidate>
 
-  <!-- USER INFO -->
+  <!-- BEST DATES -->
   <div class="section">
-    <div class="section-header">01 &nbsp;— User Information</div>
+    <div class="section-header">Best Dates</div>
     <div class="section-body">
-      <label>Full Name
-        <input type="text" id="userName" placeholder="First Last" required>
-      </label>
-      <label>Email Address
-        <input type="email" id="userEmail" placeholder="you@example.com">
-      </label>
-      <label>Phone Number
-        <input type="tel" id="userPhone" placeholder="+1 (000) 000-0000">
-      </label>
-      <label>Location / City
-        <input type="text" id="userCity" placeholder="City, State">
-      </label>
-      <label>Preferred Start
+      <label>Start Date
         <div class="radio-group" style="margin-top:0.4rem">
-          <label class="radio-item"><input type="radio" name="startDate" value="Week A — Jan 6"> <span>Week A — Jan 6</span></label>
-          <label class="radio-item"><input type="radio" name="startDate" value="Week B — Feb 3"> <span>Week B — Feb 3</span></label>
-          <label class="radio-item"><input type="radio" name="startDate" value="Week C — Mar 3"> <span>Week C — Mar 3</span></label>
+          <label class="radio-item"><input type="radio" name="startDate" value="Session A — Sep 8, 2025 to Oct 17, 2025"> <span>Session A &nbsp;—&nbsp; Sep 8 &ndash; Oct 17, 2025</span></label>
+          <label class="radio-item"><input type="radio" name="startDate" value="Session B — Nov 3, 2025 to Dec 12, 2025"> <span>Session B &nbsp;—&nbsp; Nov 3 &ndash; Dec 12, 2025</span></label>
+          <label class="radio-item"><input type="radio" name="startDate" value="Session C — Jan 12, 2026 to Feb 20, 2026"> <span>Session C &nbsp;—&nbsp; Jan 12 &ndash; Feb 20, 2026</span></label>
           <label class="radio-item"><input type="radio" name="startDate" value="Flexible"> <span>Flexible</span></label>
         </div>
       </label>
-      <label>Additional Notes about yourself
-        <textarea id="userNotes" placeholder="Anything else you'd like us to know..."></textarea>
+      <label style="gap:0">
+        <textarea id="userNotes" placeholder="Type anything here." style="margin-top:0.5rem"></textarea>
       </label>
     </div>
   </div>
 
   <!-- MAIN CATEGORIES -->
   <div class="section">
-    <div class="section-header">02 &nbsp;— Health Categories</div>
+    <div class="section-header">Health Categories</div>
     <div class="section-body" style="padding:1rem 0.75rem">
       <p style="font-size:11px;color:var(--dim);letter-spacing:0.1em;margin-bottom:0.75rem">Expand each category. Select all that apply. Add notes where relevant.</p>
 
@@ -1186,6 +1174,25 @@
     </div>
   </div>
 
+  <!-- CONTACT INFO (moved to bottom) -->
+  <div class="section">
+    <div class="section-header">Contact</div>
+    <div class="section-body">
+      <label>Full Name
+        <input type="text" id="userName" placeholder="First Last" required>
+      </label>
+      <label>Email Address
+        <input type="email" id="userEmail" placeholder="you@example.com">
+      </label>
+      <label>Phone Number
+        <input type="tel" id="userPhone" placeholder="+1 (000) 000-0000">
+      </label>
+      <label>Location / City
+        <input type="text" id="userCity" placeholder="City, State">
+      </label>
+    </div>
+  </div>
+
   <!-- SUBMIT -->
   <div class="btn-row">
     <button type="button" class="primary" onclick="downloadTxt()">Download as Text File</button>
@@ -1238,7 +1245,7 @@ function collectData() {
 }
 
 function formatTxt(d) {
-  const line = (len=60, ch='─') => ch.repeat(len);
+  const line = (len=60, ch='-') => ch.repeat(len);
   const wrap = (text, width=58) => {
     if (!text) return '  (none)';
     const words = text.split(/\s+/);
@@ -1252,7 +1259,7 @@ function formatTxt(d) {
   };
 
   let out = '';
-  out += `USHIN — 6-WEEK HEALTH RETREAT\n`;
+  out += `MEND -- 6-WEEK CUSTOM RETREAT\n`;
   out += `ENROLLMENT FORM\n`;
   out += line() + '\n\n';
 
@@ -1284,7 +1291,7 @@ function formatTxt(d) {
   });
 
   out += line() + '\n';
-  out += 'END OF ENROLLMENT FORM — USHIN\n';
+  out += 'END OF ENROLLMENT FORM -- MEND\n';
   return out;
 }
 
@@ -1313,7 +1320,7 @@ function downloadTxt() {
   const a = document.createElement('a');
   const slug = (d.name || 'participant').toLowerCase().replace(/\s+/g,'-');
   a.href = url;
-  a.download = `ushin-enrollment-${slug}-${Date.now()}.txt`;
+  a.download = `mend-enrollment-${slug}-${Date.now()}.txt`;
   a.click();
   URL.revokeObjectURL(url);
   document.getElementById('statusMsg').textContent = 'File downloaded successfully.';
